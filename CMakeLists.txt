@@ -67,6 +67,7 @@ list(APPEND GAME_SOURCE
      Classes/Entities/Player.cpp
      Classes/Entities/Entity.cpp
      Classes/Stages/StageScene.cpp
+     Classes/Extras/MyContactListener.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -78,6 +79,7 @@ list(APPEND GAME_HEADER
      Classes/Entities/Player.h
      Classes/Entities/Entity.h
      Classes/Stages/StageScene.h
+     Classes/Extras/MyContactListener.h
      )
 
 if(ANDROID)

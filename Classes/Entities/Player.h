@@ -21,6 +21,8 @@ public:
 
 	void setStateDefault();
 	void setStateMoving();
+	int getTag();
+
 };
 
 #endif // !__PLAYER_H__

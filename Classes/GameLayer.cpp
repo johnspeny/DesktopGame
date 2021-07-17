@@ -152,19 +152,41 @@ void GameLayer::update(float dt) {
 
 	}
 
-	
-	//for (b2Body* b = _world->getb2World()->GetBodyList(); b; b = b->GetNext())
-	//{
-	//	//cocos2d::log("updating");
-	//	/*
-	//	if (b->GetUserData() != nullptr) {
-	//		Sprite* sprite = (Sprite*)b->GetUserData();
-	//		sprite->setPosition(Vec2(b->GetPosition().x *
-	//			GameVars::PTM_Ratio, b->GetPosition().y * GameVars::PTM_Ratio));
-	//		sprite->setRotation(-1 * CC_RADIANS_TO_DEGREES(b->GetAngle()));
-	//	}*/
-	//}
+	// check contacts and update collisions
+	std::vector<ContactData>::iterator pos;
+	for (pos = myContactListener->_contacts.begin(); pos != myContactListener->_contacts.end(); ++pos)
+	{
+		ContactData contact = *pos;
 
+		// get the box2d bodies for each object
+		b2Body* bodyA = contact.fixtureA->GetBody();
+		b2Body* bodyB = contact.fixtureB->GetBody();
+
+		if (bodyA->GetUserData().pointer != NULL && bodyB->GetUserData().pointer != NULL)
+		{
+			Entity* entityA = (Entity*)bodyA->GetUserData().pointer;
+			Entity* entityB = (Entity*)bodyB->GetUserData().pointer;
+
+			int bTagA = entityA->getTag();
+			int bTagB = entityB->getTag();
+
+			if (bTagA == Entity::TAG_PLAYER)
+			{
+
+			}
+
+			else if (bTagB == Entity::TAG_PLAYER)
+			{
+
+			}
+
+			// check sprite tags
+
+
+		}
+	}
+
+	
 }
 
 void GameLayer::createPhysics()
@@ -173,8 +195,12 @@ void GameLayer::createPhysics()
 	b2Vec2 gravity;
 	gravity.Set(0.0f, -9.8f);
 
-	//create the world
+	// create the world
 	_world = b2WorldNode::create(gravity.x, gravity.y, GameVars::metersHeight);
+
+	// contact listener
+	myContactListener = new MyContactListener();
+	_world->getb2World()->SetContactListener(myContactListener);
 
 	// added world here
 	this->addChild(_world, -1);

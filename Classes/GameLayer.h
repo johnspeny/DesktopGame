@@ -5,6 +5,7 @@
 #include "GameVars.h"
 #include "b2WorldNode.h"
 #include "Entities/Player.h"
+#include "Extras/MyContactListener.h"
 
 
 class GameLayer : public cocos2d::Scene {
@@ -32,8 +33,10 @@ public:
 	void update(float dt);
 
 private:
+	MyContactListener* myContactListener;
 	Player* player;
 	cocos2d::Point vel;
+
 
 	void createPhysics();
 	void updatePhysics(float dt);

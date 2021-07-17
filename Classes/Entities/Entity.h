@@ -10,6 +10,9 @@
 class Entity {
 
 public:
+	static const int TAG_PLAYER = 1;
+	static const int TAG_GROUND = 2;
+
 	Entity();
 	virtual ~Entity();
 	void setBatchNode(cocos2d::SpriteBatchNode* batchNode);
@@ -17,6 +20,7 @@ public:
 	cocos2d::Sprite* getSprite();
 	int getDirection();
 	int getState();
+	virtual int getTag();
 
 protected:
 	cocos2d::SpriteBatchNode* batchNode;

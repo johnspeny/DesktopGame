@@ -204,3 +204,8 @@ void Player::setStateMoving()
 		sprite->runAction(actionStateMoving);
 	}
 }
+
+int Player::getTag()
+{
+	return Entity::TAG_PLAYER;
+}

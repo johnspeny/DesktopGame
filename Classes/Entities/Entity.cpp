@@ -29,3 +29,8 @@ int Entity::getState()
 {
 	return state;
 }
+
+int Entity::getTag()
+{
+	return 0;
+}
