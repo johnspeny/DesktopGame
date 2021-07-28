@@ -25,19 +25,15 @@ public:
 
     // Children
     using Node::addChild;
-    //void addChild(Node* child, int localZOrder, const std::string &name) override;
 
     // Get, Set
     b2World* getb2World();
     float& getPTM();
 
     
-//#if (CC_BOX2D_DEBUG)
     void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags) override;
-//#endif
 
 private:
-    //bool addChildBody(Node* child);
 
 
     std::vector<b2Body*> _dynamicChild; // store dynamic and kinematic bodies
@@ -49,10 +45,7 @@ private:
     int32 _positionIterations; // how strongly to correct position
 
 
-//#if (CC_BOX2D_DEBUG)
-    //    std::unique_ptr<CcxBox2dDebugDraw> _debugDrawInst = nullptr;
     CcxBox2dDebugDraw* _debugDrawInst;
-//#endif
 
 };
 

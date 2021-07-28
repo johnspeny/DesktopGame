@@ -68,6 +68,7 @@ list(APPEND GAME_SOURCE
      Classes/Entities/Entity.cpp
      Classes/Stages/StageScene.cpp
      Classes/Extras/MyContactListener.cpp
+     Classes/TerrainTest.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -80,6 +81,7 @@ list(APPEND GAME_HEADER
      Classes/Entities/Entity.h
      Classes/Stages/StageScene.h
      Classes/Extras/MyContactListener.h
+     Classes/TerrainTest.h
      )
 
 if(ANDROID)

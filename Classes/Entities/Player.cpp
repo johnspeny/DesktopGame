@@ -26,7 +26,9 @@ bool Player::init(b2WorldNode* _playerWorld) {
 
 	cocos2d::SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character/man/Man.plist");
 	sprite = cocos2d::Sprite::createWithSpriteFrameName("player_stand.png");
+	
 
+	
 	sprite->setPosition(cocos2d::Vec2(visibleSize.width * 0.5f + origin.x, visibleSize.height * 0.8f + origin.y));
 	sprite->setTag(1);
 
@@ -69,13 +71,9 @@ bool Player::init(b2WorldNode* _playerWorld) {
 	playerBodyDef.fixedRotation = true;
 	_body = _world->getb2World()->CreateBody(&playerBodyDef);
 
-	/*
-	b2CircleShape dynamicCircle;
-	dynamicCircle.m_radius = 0.5f;
-	*/
 
 	b2PolygonShape dynamicCircle;
-	dynamicCircle.SetAsBox(0.5f, 0.5f);
+	dynamicCircle.SetAsBox(sprite->getContentSize().width*0.25f / GameVars::PTM_Ratio, sprite->getContentSize().height*0.5f / GameVars::PTM_Ratio);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicCircle;
@@ -121,24 +119,25 @@ void Player::move(cocos2d::Point velocity)
 		changeDirection(2);
 		//impulse = b2Vec2(0.25f * _body->GetMass(), 0.0f);
 		//_body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
-		_body->SetLinearVelocity(b2Vec2(3.0f, _body->GetLinearVelocity().y));
+		_body->SetLinearVelocity(b2Vec2(5.0f, _body->GetLinearVelocity().y));
 	}
 	else if (velocity.x == -1)
 	{
 		setStateMoving();
 		changeDirection(1);
-		cocos2d::log("%f", _body->GetMass());
 		//impulse = b2Vec2(-0.25f * _body->GetMass(), 0.0f);
 		//_body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
-		_body->SetLinearVelocity(b2Vec2(-3.0f, _body->GetLinearVelocity().y));
+		_body->SetLinearVelocity(b2Vec2(-5.0f, _body->GetLinearVelocity().y));
 	}
 	else if (velocity.x == 0)
 	{
 		//float xSpeed = _body->GetLinearVelocity().x;
-		_body->SetLinearVelocity(b2Vec2_zero);
+		//_body->SetLinearVelocity(b2Vec2_zero);
+		//b2Vec2 velocity = _body->GetLinearVelocity();
+		//velocity.x = 0;
+		_body->SetLinearVelocity(b2Vec2(0.0f, _body->GetLinearVelocity().y));
 		setStateDefault();
 		//_body->SetLinearDamping();
-		cocos2d::log("nothing");
 	}
 }
 
@@ -166,7 +165,6 @@ void Player::update(float dt)
 					float speed = velocity.Length();
 
 				
-					cocos2d::log("speed === %f", speed);
 
 					if (speed > maxSpeed) {
 						//b->SetLinearDamping(1.5f);
@@ -184,6 +182,8 @@ void Player::update(float dt)
 		}
 	}
 }
+
+
 
 void Player::setStateDefault()
 {
@@ -208,4 +208,9 @@ void Player::setStateMoving()
 int Player::getTag()
 {
 	return Entity::TAG_PLAYER;
+}
+
+void Player::jumpOnPress()
+{
+	_body->ApplyLinearImpulse(b2Vec2(0, _body->GetMass() * 1), _body->GetWorldCenter(), true);
 }
