@@ -210,7 +210,20 @@ int Player::getTag()
 	return Entity::TAG_PLAYER;
 }
 
-void Player::jumpOnPress()
+void Player::jumpOnPress(int acc, bool isJ)
 {
-	_body->ApplyLinearImpulse(b2Vec2(0, _body->GetMass() * 1), _body->GetWorldCenter(), true);
+	
+	int max_speedy = 10;
+	float currentVelY = _body->GetLinearVelocity().y;
+	if (currentVelY > max_speedy && isJ == true)
+	{
+		cocos2d::log("current speed %f", currentVelY);
+		_body->ApplyLinearImpulse(b2Vec2(0, _body->GetMass() * 0), _body->GetWorldCenter(), true);
+	}
+	else if(currentVelY < max_speedy && isJ == true)
+	{
+		_body->ApplyLinearImpulse(b2Vec2(0, _body->GetMass() * acc), _body->GetWorldCenter(), true);
+
+	}
+	
 }

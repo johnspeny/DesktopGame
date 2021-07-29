@@ -24,7 +24,7 @@ public:
 	void setStateMoving();
 	int getTag();
 
-	void jumpOnPress();
+	void jumpOnPress(int acc, bool isJ);
 
 };
 

@@ -73,6 +73,7 @@ void GameLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::
 
 	heldKeysz.erase(keyCode);
 	vel.x = 0;
+	player->jumpOnPress(0, false);
 }
 
 void GameLayer::update(float dt) {
@@ -106,7 +107,16 @@ void GameLayer::update(float dt) {
 		// jumping
 		if (isKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
 		{
-			player->jumpOnPress();
+			std::chrono::duration<double> elapsed_seconds = std::chrono::system_clock::now() - heldKeysz[cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW];
+			cocos2d::log("Up pressed for %f seconds", elapsed_seconds.count());
+			if (elapsed_seconds.count() > 0.2f)
+			{
+				player->jumpOnPress(0, false);
+			}
+			else
+			{
+				player->jumpOnPress(1, true);
+			}
 		}
 
 	}
