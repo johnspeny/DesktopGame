@@ -8,9 +8,7 @@
 
 b2WorldNode::b2WorldNode():Node(){
     _world = nullptr;
-//#if (CC_BOX2D_DEBUG)
     _debugDrawInst = nullptr;
-//#endif
     _PTM_Ratio = GameVars::PTM_Ratio;
 
     _velocityIterations = 3;
@@ -21,16 +19,13 @@ b2WorldNode::b2WorldNode():Node(){
 b2WorldNode::~b2WorldNode(){
     delete _world;
     _world = nullptr;
-//#if (CC_BOX2D_DEBUG)
     delete _debugDrawInst;
     _debugDrawInst = nullptr;
-//#endif
 }
 
 bool b2WorldNode::init()
 {
 //#if (CC_BOX2D_DEBUG)
-//    _debugDrawInst = std::make_unique<CcxBox2dDebugDraw>(getPTM());
     _debugDrawInst = new CcxBox2dDebugDraw(_PTM_Ratio);
 
     uint32 flags = 0;
@@ -42,8 +37,6 @@ bool b2WorldNode::init()
     _debugDrawInst->SetFlags(flags);
 
    _world->SetDebugDraw(_debugDrawInst);
-//    getb2World()->SetDebugDraw(_debugDrawInst.get());
-//#endif
 
     return true;
 }
@@ -121,15 +114,6 @@ void b2WorldNode::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transfo
 
     _debugDrawInst->GetDrawNode()->clear();
     _world->DebugDraw();
-//     b2World->DrawDebugData();
     _debugDrawInst->GetDrawNode()->draw(renderer, transform, parentFlags);
     director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 }
-
-
-
-
-
-
-
-

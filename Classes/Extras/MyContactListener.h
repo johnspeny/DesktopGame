@@ -23,6 +23,8 @@ public:
 	MyContactListener();
 	~MyContactListener();
 
+	int numFootContacts;
+	
 	std::vector<ContactData> _contacts;
 
 	virtual void BeginContact(b2Contact* contact);

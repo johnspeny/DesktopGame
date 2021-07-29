@@ -19,10 +19,13 @@ public:
 	void updateVelocity(cocos2d::Point velocity);
 	void update(float dt);
 
+
 	void setStateDefault();
 	void setStateMoving();
 	int getTag();
 
+	void jumpOnPress(int acc, bool isJ);
+	int m_jumpTimeout;
 };
 
 #endif // !__PLAYER_H__
