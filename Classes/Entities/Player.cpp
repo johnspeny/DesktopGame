@@ -4,6 +4,7 @@ Player::Player()
 {
 	direction = 2; // 1 = left, 2 = right
 	state = 1;
+	m_jumpTimeout = 0;
 }
 
 Player::~Player()
@@ -62,26 +63,39 @@ bool Player::init(b2WorldNode* _playerWorld) {
 	actionStateMoving->retain();
 
 
-	// create physics
+	// create body definition
 	this->_world = _playerWorld;
 	b2BodyDef playerBodyDef;
 	playerBodyDef.type = b2_dynamicBody;
 	playerBodyDef.position.Set(sprite->getPositionX() / GameVars::PTM_Ratio, sprite->getPositionY() / GameVars::PTM_Ratio);
 	playerBodyDef.userData.pointer = reinterpret_cast<uintptr_t>(this);
 	playerBodyDef.fixedRotation = true;
-	_body = _world->getb2World()->CreateBody(&playerBodyDef);
-
-
+	
+	// shape definition for main fixture
 	b2PolygonShape dynamicCircle;
 	dynamicCircle.SetAsBox(sprite->getContentSize().width*0.25f / GameVars::PTM_Ratio, sprite->getContentSize().height*0.5f / GameVars::PTM_Ratio);
 
+	// fixture definition
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicCircle;
 	fixtureDef.density = 1.0f;
-	fixtureDef.restitution = 0.1f;
+	fixtureDef.restitution = 0.0f;
 	fixtureDef.friction = 0.0f;
 
+	// create dynamic body
+	_body = _world->getb2World()->CreateBody(&playerBodyDef);
+
+	// add main fixture
 	_body->CreateFixture(&fixtureDef);
+
+
+	// add foot sensor fixture
+	dynamicCircle.SetAsBox(0.3f, 0.3f, b2Vec2(0.0f,-sprite->getContentSize().height * 0.5f / GameVars::PTM_Ratio), 0.0f);
+	fixtureDef.isSensor = true;
+	b2Fixture* footSensorFixture = _body->CreateFixture(&fixtureDef);
+	int fixTag = 3;
+	footSensorFixture->GetUserData().pointer = reinterpret_cast<uintptr_t>((void*)3);
+
 
 	// set default state
 	setStateDefault();
@@ -148,6 +162,8 @@ void Player::updateVelocity(cocos2d::Point velocity)
 
 void Player::update(float dt)
 {
+	m_jumpTimeout--;
+
 	if (_world) {
 		for (b2Body* b = _world->getb2World()->GetBodyList(); b ; b=b->GetNext())
 		{
@@ -222,8 +238,10 @@ void Player::jumpOnPress(int acc, bool isJ)
 	}
 	else if(currentVelY < max_speedy && isJ == true)
 	{
-		_body->ApplyLinearImpulse(b2Vec2(0, _body->GetMass() * acc), _body->GetWorldCenter(), true);
 
+		//if (m_jumpTimeout > 0) return;
+		_body->ApplyLinearImpulse(b2Vec2(0, _body->GetMass() * acc), _body->GetWorldCenter(), true);
+		//m_jumpTimeout = 10;
 	}
 	
 }

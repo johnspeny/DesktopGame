@@ -103,18 +103,22 @@ void GameLayer::update(float dt) {
 
 		player->updateVelocity(cocos2d::Point(vel.x, 0));
 		
-		
+		cocos2d::log("number foot %d", myContactListener->numFootContacts);
+
+
 		// jumping
 		if (isKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
 		{
 			std::chrono::duration<double> elapsed_seconds = std::chrono::system_clock::now() - heldKeysz[cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW];
-			cocos2d::log("Up pressed for %f seconds", elapsed_seconds.count());
-			if (elapsed_seconds.count() > 0.2f)
+			if (elapsed_seconds.count() > 0.1f)
 			{
 				player->jumpOnPress(0, false);
 			}
 			else
 			{
+				cocos2d::log("Up pressed for %f seconds", elapsed_seconds.count());
+				cocos2d::log("number foot %d", myContactListener->numFootContacts);
+				if (myContactListener->numFootContacts < 1) return;
 				player->jumpOnPress(1, true);
 			}
 		}

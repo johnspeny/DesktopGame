@@ -25,7 +25,7 @@ public:
 	int getTag();
 
 	void jumpOnPress(int acc, bool isJ);
-
+	int m_jumpTimeout;
 };
 
 #endif // !__PLAYER_H__
